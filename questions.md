@@ -19,7 +19,6 @@
     const { width, height } = useWindowSize(); // a hook that returns windowHeight and width
     return <Component {...(props as P)} windowWidth={width} windowHeight={height} />;
   };
-```
 
 
 7) Callbacks have error first approach, meaning the callback function takes (err, data) =>  {} and the function will
