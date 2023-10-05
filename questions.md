@@ -14,7 +14,7 @@
 6) Redux's connect function is a HOC, withRouter is a HOC from react router, or an example of custom HOC could be
     withWindowSize that adds windowWidth and windowHeight the the given component
     ```sh
-    export const withWindowSize = <P extends WithWindowSizeProps>(Component: React.ComponentType<P>,): 
+    export const withWindowSize = <P extends WithWindowSizeProps>(Component: React.ComponentType<P>): 
     React.FC<Omit<P, keyof WithWindowSizeProps>> => props => {
     const { width, height } = useWindowSize(); // a hook that returns windowHeight and width
     return <Component {...(props as P)} windowWidth={width} windowHeight={height} />;
