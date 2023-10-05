@@ -2,15 +2,24 @@
 
 An autocomplete that lets you search for pokemon names
 
-## Available Scripts
+### Installation
 
-In the project directory, you can run:
+1. Clone the repository:
+```sh
+git clone https://github.com/LilitBadikyan/deel-task.git
+```
 
-### `npm start`
+2. Change into the project directory:
+```sh
+cd deel-task
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+3. Install dependencies 
+```sh
+npm i
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
+4. Start the application
+```sh
+npm start
+```
