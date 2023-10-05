@@ -13,11 +13,14 @@
 
 6) Redux's connect function is a HOC, withRouter is a HOC from react router, or an example of custom HOC could be
     withWindowSize that adds windowWidth and windowHeight the the given component
-    `export const withWindowSize = <P extends WithWindowSizeProps>(Component: React.ComponentType<P>,): 
+    ```sh
+    export const withWindowSize = <P extends WithWindowSizeProps>(Component: React.ComponentType<P>,): 
     React.FC<Omit<P, keyof WithWindowSizeProps>> => props => {
     const { width, height } = useWindowSize(); // a hook that returns windowHeight and width
-    return <Component {...(props as P)} windowWidth={width} windowHeight={height} />;`
+    return <Component {...(props as P)} windowWidth={width} windowHeight={height} />;
   };
+   ```
+
 
 7) Callbacks have error first approach, meaning the callback function takes (err, data) =>  {} and the function will
     first check for an error and then will move on to the rest. The problem with callbacks is that you can easily end up in a
