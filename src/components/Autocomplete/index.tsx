@@ -12,13 +12,24 @@ export function Autocomplete() {
   const itemsRef = useRef<Map<number, HTMLParagraphElement>>(new Map());
   const [value, setValue] = useState("");
   const [activeOptionIndex, setActiveOptionIndex] = useState(-1);
-  const { options, showOptions, updateOptions, setShowOptions } = useOptions(value);
+  const {
+    options,
+    showOptions,
+    handleShowOptionsInternally,
+    updateOptions,
+    setShowOptions,
+    setHandleShowOptionsInternally,
+  } = useOptions(value);
 
   const debouncedUpdateOptions = useMemo(
-    () => debounce((val: string) => {
+    () =>
+      debounce((val: string) => {
         updateOptions(val);
-    }),
-    [updateOptions]
+        if (!handleShowOptionsInternally) {
+          setHandleShowOptionsInternally(true);
+        }
+      }),
+    [updateOptions, handleShowOptionsInternally, setHandleShowOptionsInternally]
   );
 
   /** Scrolls to the option given the option id */
@@ -30,30 +41,30 @@ export function Autocomplete() {
         inline: "nearest",
       });
     }
-  }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
     if (!e.target.value) {
-        setShowOptions(false);
+      setShowOptions(false);
     }
+    setValue(e.target.value);
     setActiveOptionIndex(-1);
 
     // debounced version of this function
     debouncedUpdateOptions(e.target.value);
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (options.length === 0) return;
-    
+
     if (e.key === "ArrowDown") {
-    e.preventDefault();
+      e.preventDefault();
       const idx =
         activeOptionIndex < options.length - 1 ? activeOptionIndex + 1 : 0;
       setActiveOptionIndex(idx);
       scrollToId(options[idx].id);
     } else if (e.key === "ArrowUp") {
-    e.preventDefault();
+      e.preventDefault();
       const idx =
         activeOptionIndex > 0 ? activeOptionIndex - 1 : options.length - 1;
       setActiveOptionIndex(idx);
@@ -62,19 +73,21 @@ export function Autocomplete() {
       setValue(options[activeOptionIndex].name);
       setActiveOptionIndex(-1);
       setShowOptions(false);
+      setHandleShowOptionsInternally(false);
+      updateOptions(options[activeOptionIndex].name);
     }
   };
 
   const handleBlur = () => {
     setShowOptions(false);
     setActiveOptionIndex(-1);
-  }
+  };
 
   const handleFocus = () => {
     if (value) {
       setShowOptions(true);
     }
-  }
+  };
 
   return (
     <div className="container">
@@ -109,6 +122,8 @@ export function Autocomplete() {
                     e.preventDefault();
                     setValue(option.name);
                     setShowOptions(false);
+                    setHandleShowOptionsInternally(false);
+                    updateOptions(option.name);
                   }}
                 >
                   <HighlightedText text={option.name} highlight={value} />

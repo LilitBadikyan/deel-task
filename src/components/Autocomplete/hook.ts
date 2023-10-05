@@ -11,16 +11,25 @@ interface ReturnValue {
   options: OptionType[];
   /** Boolean value that determines if the list is visible or not */
   showOptions: boolean;
+  /** 
+   * In certain situations, the component may need to decide whether or not to display options. 
+   * In such cases, the component will set handleShowOptionsInternally to false, 
+   * while at other times, it will default to true.
+   * @default true
+   */
+  handleShowOptionsInternally: boolean;
   updateOptions: (value: string) => void;
   setShowOptions: (value: boolean) => void;
+  setHandleShowOptionsInternally: (value: boolean) => void;
 }
 
 /** Custom hook for showing /hiding, getting and updating the options list */
 export function useOptions(initialValue: string): ReturnValue {
   const [value, setValue] = useState(initialValue);
-  const [showOptions, setShowOptions] = useState(false);
-  const [options, setOptions] = useState<OptionType[]>([]);
   const [data, setData] = useState<OptionType[]>([]);
+  const [options, setOptions] = useState<OptionType[]>([]);
+  const [showOptions, setShowOptions] = useState(false);
+  const [handleShowOptionsInternally, setHandleShowOptionsInternally] = useState(true);
 
   useEffect(() => {
     // Function to fetch data
@@ -56,19 +65,23 @@ export function useOptions(initialValue: string): ReturnValue {
             const searchRegex = new RegExp(escapeRegExp(value), "i");
             setOptions(data.filter((option) => searchRegex.test(option.name)));
           }
-          // show suggestion list only when the value is not empty
-          setShowOptions(value ? true : false);
+          if (handleShowOptionsInternally) {
+            // Display the suggestion list only when the value is not empty
+            setShowOptions(value ? true : false);
+          }
           resolve("success");
         }, 100)
       );
     }
     filterData();
-  }, [value, data]);
+  }, [value, data, handleShowOptionsInternally]);
 
   return {
     options,
     showOptions,
+    handleShowOptionsInternally,
     setShowOptions,
+    setHandleShowOptionsInternally,
     updateOptions: setValue,
   };
 }
