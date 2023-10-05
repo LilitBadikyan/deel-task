@@ -13,10 +13,10 @@
 
 6) Redux's connect function is a HOC, withRouter is a HOC from react router, or an example of custom HOC could be
     withWindowSize that adds windowWidth and windowHeight the the given component
-    export const withWindowSize = <P extends WithWindowSizeProps>(Component: React.ComponentType<P>,): 
+    `export const withWindowSize = <P extends WithWindowSizeProps>(Component: React.ComponentType<P>,): 
     React.FC<Omit<P, keyof WithWindowSizeProps>> => props => {
     const { width, height } = useWindowSize(); // a hook that returns windowHeight and width
-    return <Component {...(props as P)} windowWidth={width} windowHeight={height} />;
+    return <Component {...(props as P)} windowWidth={width} windowHeight={height} />;`
   };
 
 7) Callbacks have error first approach, meaning the callback function takes (err, data) =>  {} and the function will
@@ -25,8 +25,8 @@
 
 8) setState takes 2 arguments where the first one is an updater and the second argument is an optional callback function
     which gets executed after setState is completed. We can use the first argument in two ways
-        1) this.setState({val: newVal});
-        2) this.setState((prevState, props) => ({val: prevState.val + 1})); // this is used when new state depends on prevState
+        1) `this.setState({val: newVal});`
+        2) `this.setState((prevState, props) => ({val: prevState.val + 1}));` // this is used when new state depends on prevState
     setState is async so that react can batch multiple setState operations into one to improve performance
 
 9) 1) Rename class declaration to be a function and pass props as argument
